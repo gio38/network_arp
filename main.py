@@ -30,38 +30,20 @@ ip_dc02_not_dc01: list = list()
 
 try:
     ip_list = get_ip_list()
-    print(ip_list)
 
     for ip in ip_list:
         device = ConnectHandler(device_type="aruba_osswitch", ip=ip, username=username, password=password)
-        d = device
+
         arp_result = device.send_command("show arp")
 
-        edit_arp_result = arp_result.splitlines()
-
-        # print(edit_arp_result)
-        # print(f"\n --- {ip} ---\n")
-
-        # pp(edit_arp_result)
+        edit_arp_result: list = arp_result.splitlines()
 
         if len(dc01_arp_ip_list) == 0:
             print(f"------------------ Connected to DC 01 ip: {ip} ------------------")
             dc01_arp_ip_list = get_ip_from_arp_table(edit_arp_result)
-            # print(ip)
-            # for i in edit_arp_result[5:-3]:
-            #     a = i.split()
-            #     # print(a[0])
-            #     print("------------- DC 01 ----------------")
-            #     dc01_arp_ip_list.append(a[0])
         else:
             print(f"------------------ Connected to DC 02 ip: {ip} -------------------")
             dc02_arp_ip_list = get_ip_from_arp_table(edit_arp_result)
-            # print(ip)
-            # for i in edit_arp_result[5:-3]:
-            #     a = i.split()
-            #     # print(a[0])
-            #     print("------------- DC 02 -----------------")
-            #     dc02_arp_ip_list.append(a[0])
 
         print("------------------------ Disconnect -------------------------")
         device.disconnect()
