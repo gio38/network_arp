@@ -4,22 +4,6 @@ from netmiko import ConnectHandler
 from credentials import *
 from pprint import pprint as pp
 
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-#
-# def print_hi(name):
-#     # Use a breakpoint in the code line below to debug your script.
-#     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-#
-#
-# # Press the green button in the gutter to run the script.
-# if __name__ == '__main__':
-#     print_hi('PyCharm')
-#
-# # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
 dc01_arp_ip_list: list = list()
 dc02_arp_ip_list: list = list()
@@ -42,7 +26,7 @@ try:
             print(f"------------------ Connected to DC 01 ip: {ip} ------------------")
             dc01_arp_ip_list = get_ip_from_arp_table(edit_arp_result)
         else:
-            print(f"------------------ Connected to DC 02 ip: {ip} -------------------")
+            print(f"------------------ Connected to DC 02 ip: {ip} ------------------")
             dc02_arp_ip_list = get_ip_from_arp_table(edit_arp_result)
 
         print("------------------------ Disconnect -------------------------")
@@ -74,6 +58,9 @@ finally:
 
     print("\n -------- IP's in DC 02 not in DC 01 ---------")
     pp(sorted(ip_dc02_not_dc01))
+
+    with open('arp_result.txt', 'w') as file:
+        file.write(str(sorted(dc01_arp_ip_list)))
 
     # d.disconnect()
 
